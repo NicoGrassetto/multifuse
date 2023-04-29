@@ -1,12 +1,21 @@
 
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, DataLoader 
 import pathlib
 import os
 from PIL import Image
-import numpy as np
-import torch
-import torch.nn.functional as F
-import torchvision.transforms as transforms
+# import numpy as np
+
+def create_dataloaders(training_directory: str, test_directory: str, transform, batch_size: int, num_workers: int = os.cpu_count()):
+  #dataset = HMDB51Dataset("/content/drive/MyDrive/thesis/data/HMDB-51-downsampled_copy", transform=backbone_transform) 
+  training_data = HMDB51Dataset(training_directory, transform=transform) 
+  test_data = HMDB51Dataset(test_directory, transform=transform) 
+  
+  class_names = training_data.classes
+  
+  training_dataloader = DataLoader(dataset=training_data, batch_size=batch_size, num_workers=num_workers, shuffle=True, pin_memory=True)
+  test_dataloader = DataLoader(dataset=test_data, batch_size=batch_size, num_workers=num_workers, shuffle=True, pin_memory=True)
+  
+  return training_dataloader, test_dataloader, class_names
 
 class HMDB51Dataset(Dataset):
   def __init__(self, targ_dir: str, transform=None):
@@ -21,7 +30,7 @@ class HMDB51Dataset(Dataset):
   def __getitem__(self, index: int):
     X = self.get_example(self.paths[index])
     y = self.get_label(self.paths[index])
-    return X[0][0], y
+    return X, y
 
   def count_subfolders(self, folder_path):
       count = 0
@@ -99,3 +108,7 @@ class HMDB51Dataset(Dataset):
         if subfolder.is_dir():
             num_subfolders += 1
     return num_subfolders
+
+# dataset = HMDB51Dataset("/content/drive/MyDrive/thesis/data/HMDB-51-downsampled_copy", transform=backbone_transform) 
+# dataloader = DataLoader(dataset=dataset, batch_size=16, num_workers=os.cpu_count(), shuffle=True)
+# video_batch, label_batch = next(iter(dataloader))
