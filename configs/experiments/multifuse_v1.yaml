@@ -1,0 +1,72 @@
+# MultiFuse V1 Experiment
+# @package _global_
+defaults:
+  - base_config
+  - override data: hmdb51
+
+experiment:
+  name: multifuse_v1
+  description: "MultiFuse architecture with weighted consensus fusion"
+  tags:
+    - multifuse
+    - multimodal
+    - weighted_consensus
+
+model:
+  name: multifuse_v1
+  type: fusion_model
+  
+  # Multiple backbone streams
+  backbones:
+    rgb:
+      name: efficientnet_b0
+      pretrained: true
+      freeze_features: false
+      input_modality: rgb
+    
+    optical_flow:
+      name: efficientnet_b0
+      pretrained: true
+      freeze_features: false
+      input_modality: optical_flow
+  
+  # Fusion configuration
+  fusion:
+    type: weighted_consensus
+    temperature: 1.0
+    learnable_weights: true
+    attention_mechanism: true
+    
+  classifier:
+    dropout: 0.3
+    num_classes: 51
+
+training:
+  epochs: 15
+  learning_rate: 0.0001
+  optimizer: adamw
+  weight_decay: 1e-3
+  loss_function: cross_entropy
+  
+  # Multi-stream training
+  modality_weights:
+    rgb: 1.0
+    optical_flow: 0.8
+  
+  scheduler:
+    type: cosine_annealing
+    T_max: 15
+    eta_min: 1e-6
+
+  early_stopping:
+    enabled: true
+    patience: 5
+    min_delta: 0.001
+
+validation:
+  frequency: 1
+  metrics:
+    - accuracy
+    - top5_accuracy
+    - f1_score
+    - fusion_weights_analysis

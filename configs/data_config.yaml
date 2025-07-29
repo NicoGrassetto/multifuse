@@ -1,0 +1,45 @@
+# Data configuration
+name: hmdb51
+dataset_name: "HMDB-51"
+
+# Paths
+raw_data_path: "/data/raw/HMDB-51"
+processed_data_path: "/data/processed/HMDB-51-downsampled"
+annotations_path: "/data/annotations/hmdb51"
+
+# Data processing
+preprocessing:
+  downsample: true
+  target_fps: 12
+  frame_size: [224, 224]
+  segment_length: 16  # frames per segment
+  overlap: 0.5  # overlap between segments
+
+# Data splits
+splits:
+  train: 0.7
+  val: 0.15
+  test: 0.15
+
+# Data loading
+dataloader:
+  batch_size: 32
+  num_workers: 4
+  pin_memory: true
+  shuffle: true
+  drop_last: true
+
+# Data augmentation
+augmentation:
+  enabled: true
+  horizontal_flip: 0.5
+  rotation: 10
+  color_jitter:
+    brightness: 0.2
+    contrast: 0.2
+    saturation: 0.2
+    hue: 0.1
+  random_crop: true
+  normalize:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]

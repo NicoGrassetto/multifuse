@@ -1,0 +1,6 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: multifuse-training
+version: 1.0
+image: mcr.microsoft.com/azureml/openmpi4.1.0-cuda11.8-cudnn8-ubuntu20.04:latest
+conda_file: file:training-conda.yml
+description: Environment for MultiFuse model training with PyTorch and CUDA support

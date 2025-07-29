@@ -1,0 +1,13 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+name: multifuse-training-pipeline
+jobs:
+  train:
+    type: command
+    command: >-
+      python scripts/train.py --config configs/base_config.yaml
+    environment: azureml:multifuse-training-env@latest
+    compute: azureml:gpu-cluster
+    inputs:
+      data: azureml:my-dataset@latest
+    outputs:
+      model: outputs/models/

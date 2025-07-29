@@ -1,0 +1,47 @@
+# Base configuration for MultiFuse experiments
+defaults:
+  - _self_
+  - data: hmdb51
+  - model: multifuse_v1
+  - training: default
+
+# Experiment metadata
+experiment:
+  name: multifuse_baseline
+  description: "Baseline MultiFuse experiment"
+  tags:
+    - multifuse
+    - action_recognition
+    - multimodal
+
+# Paths
+paths:
+  data_dir: "/data"
+  output_dir: "/outputs"
+  model_dir: "/outputs/models"
+  log_dir: "/outputs/logs"
+
+# Device configuration
+device:
+  use_cuda: true
+  gpu_id: 0
+
+# Logging
+logging:
+  level: INFO
+  log_to_file: true
+  tensorboard: true
+  wandb:
+    enabled: false
+    project: "multifuse"
+
+# Reproducibility
+seed: 42
+
+# Azure ML specific
+azure_ml:
+  workspace_name: ""
+  resource_group: ""
+  subscription_id: ""
+  compute_target: "gpu-cluster"
+  environment: "multifuse-training"

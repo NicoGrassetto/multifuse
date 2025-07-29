@@ -1,0 +1,48 @@
+# EfficientNet Baseline Experiment
+# @package _global_
+defaults:
+  - base_config
+  - override data: hmdb51
+
+experiment:
+  name: efficientnet_baseline
+  description: "EfficientNet B0 baseline for action recognition"
+  tags:
+    - efficientnet
+    - baseline
+    - transfer_learning
+
+model:
+  name: efficientnet_b0
+  type: backbone_only
+  backbone:
+    name: efficientnet_b0
+    pretrained: true
+    freeze_features: true
+  classifier:
+    dropout: 0.2
+    num_classes: 51  # HMDB-51 classes
+
+training:
+  epochs: 5
+  learning_rate: 0.001
+  optimizer: adam
+  weight_decay: 1e-4
+  loss_function: cross_entropy
+  
+  scheduler:
+    type: step_lr
+    step_size: 2
+    gamma: 0.1
+
+  early_stopping:
+    enabled: true
+    patience: 3
+    min_delta: 0.001
+
+validation:
+  frequency: 1  # validate every epoch
+  metrics:
+    - accuracy
+    - top5_accuracy
+    - f1_score
