@@ -18,9 +18,6 @@ sys.path.append(str(Path(__file__).parent.parent / "src"))
 import torch
 import torchvision.transforms as transforms
 import torchvision.models as models
-import yaml
-from src.training.trainer import train
-from src.data.loaders import create_dataloaders
 from src.utils.config import load_config
 from src.utils.logging import setup_logging
 

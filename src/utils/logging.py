@@ -7,7 +7,9 @@ from pathlib import Path
 from typing import Dict, Any
 
 
-def setup_logging(logging_config: Dict[str, Any] = None) -> None:
+from typing import Optional
+
+def setup_logging(logging_config: Optional[Dict[str, Any]] = None) -> None:
     """
     Setup logging configuration.
     

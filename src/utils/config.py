@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Dict, Any
 
 
-def load_config(config_path: str) -> Dict[str, Any]:
+def load_config(config_path: str | Path) -> Dict[str, Any]:
     """
     Load configuration from YAML file.
     
@@ -27,7 +27,7 @@ def load_config(config_path: str) -> Dict[str, Any]:
     return config
 
 
-def save_config(config: Dict[str, Any], output_path: str) -> None:
+def save_config(config: Dict[str, Any], output_path: str | Path) -> None:
     """
     Save configuration to YAML file.
     
